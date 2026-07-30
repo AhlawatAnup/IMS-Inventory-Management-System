@@ -1,0 +1,46 @@
+{
+  "name": "IMS:Inventory Management System",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.server.js",
+  "scripts": {
+    "start": "node main.server.js",
+    "format": "prettier --write .",
+    "web-build": "webpack --config webpack.config.js",
+    "web-watch": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhlawatAnup/IMS-Inventory-Management-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AhlawatAnup/IMS-Inventory-Management-System/issues"
+  },
+  "homepage": "https://github.com/AhlawatAnup/IMS-Inventory-Management-System#readme",
+  "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "babel-loader": "^10.1.1",
+    "cheerio": "^1.2.0",
+    "css-loader": "^7.1.4",
+    "html-minifier-terser": "^7.2.0",
+    "mini-css-extract-plugin": "^2.10.2",
+    "prettier": "^3.9.6",
+    "webpack": "^5.109.2",
+    "webpack-bundle-analyzer": "^5.3.1",
+    "webpack-cli": "^7.2.2",
+    "webpack-dev-server": "^6.0.0"
+  },
+  "dependencies": {
+    "connect-mongo": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express-session": "^1.19.0",
+    "lucide": "^1.28.0",
+    "mongoose": "^9.8.1"
+  }
+}
