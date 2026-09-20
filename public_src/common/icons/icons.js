@@ -30,6 +30,16 @@ import {
   CircleX,
   ArrowDownToLine,
   X,
+  LogIn,
+  UserPlus,
+  UserPen,
+  UserX,
+  Upload,
+  DatabaseArrowUp,
+  Pencil,
+  Trash,
+  Search,
+  Copy,
 } from 'lucide';
 
 createIcons({
@@ -64,5 +74,15 @@ createIcons({
     CircleX,
     ArrowDownToLine,
     X,
+    LogIn,
+    UserPlus,
+    UserPen,
+    UserX,
+    Upload,
+    DatabaseArrowUp,
+    Pencil,
+    Trash,
+    Search,
+    Copy,
   },
 });

@@ -53,6 +53,7 @@ module.exports = {
     home: './public_src/home/js/home.packer.js',
     admin: './public_src/admin/js/admin.packer.js',
     user: './public_src/user/js/user.packer.js',
+    resetPass: './public_src/admin/js/resetPass.js',
   },
 
   output: {

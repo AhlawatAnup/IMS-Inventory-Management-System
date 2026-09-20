@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+}
+
+.ims-input-box {
+  position: relative;
+  width: 100%;
+  font-family: 'Rubik';
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 22px 15px 5px;
+    font-size: 1.2rem;
+    border-radius: 0.6rem;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Rubik';
+    color: black;
+    background: unset;
+    border: 1px solid #bdbdbd;
+    resize: none;
+
+    &:focus {
+      border-color: #4a90e2;
+      box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+    }
+
+    &:focus ~ label,
+    &:not(:placeholder-shown) ~ label {
+      top: 0.4rem;
+      left: 1rem;
+      font-size: 1rem;
+    }
+  }
+
+  input {
+    height: 3.5rem;
+  }
+
+  textarea {
+    min-height: 3rem;
+    padding-top: 1rem;
+  }
+
+  label {
+    position: absolute;
+    top: 0.7rem;
+    left: 1.2rem;
+    color: #5d5d5d;
+    font-size: 1.4rem;
+    pointer-events: none;
+    padding: 0 0.4rem;
+    transition: 0.2s ease all;
+    font-family: 'Rubik';
+  }
+
+  span {
+    position: absolute;
+    top: 1.7rem;
+    right: 1.2rem;
+    color: #999;
+    font-size: 1.4rem;
+    pointer-events: none;
+    padding: 0 0.4rem;
+    transition: 0.2s ease all;
+    font-family: 'Rubik';
+
+    &.danger {
+      color: red;
+    }
+  }
+}

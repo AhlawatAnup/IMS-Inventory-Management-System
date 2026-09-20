@@ -1,0 +1,36 @@
+@import url('../../common/components.css');
+@import url('../style/user.css');
+
+.hidden {
+  display: none;
+}
+
+.overlay {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+#CSVUploadForm {
+  .ims-input-box {
+    width: 70%;
+
+    input {
+      height: 5rem;
+      padding-top: 3rem;
+      font-size: 1.05rem;
+    }
+  }
+}
+
+#CSVDisplayDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+
+  .ims-btn-v1 {
+    button {
+      gap: 0.2rem;
+    }
+  }
+}

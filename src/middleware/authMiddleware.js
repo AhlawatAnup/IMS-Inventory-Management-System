@@ -13,3 +13,14 @@ exports.preventAuth = (req, res, next) => {
   }
   next();
 };
+
+exports.session_checker = (req, res, next) => {
+  console.log(req.session.role);
+  console.log(req.session.user);
+  if (req.session.role && req.session.user) {
+    console.log('valid Session');
+    return next();
+  }
+
+  return res.redirect('/');
+};

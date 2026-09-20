@@ -1,0 +1,23 @@
+.ims-btn-v1 {
+  display: flex;
+  gap: 0.3rem;
+  button {
+    font-family: 'Rubik', sans-serif;
+    color: white;
+    background: #2563eb;
+    padding: 1.1rem 1.8rem !important;
+    border-radius: 0.8rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    cursor: pointer;
+    border: unset;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.01);
+    }
+  }
+}
