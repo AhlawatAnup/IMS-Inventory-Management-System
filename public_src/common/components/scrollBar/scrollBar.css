@@ -1,0 +1,27 @@
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+  background-color: transparent;
+  background: transparent;
+}
+
+/* width */
+.ims-scroll-bar::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.ims-scroll-bar::-webkit-scrollbar-track {
+  /* border-radius: var(--border-radius-1); */
+}
+
+/* Handle */
+.ims-scroll-bar::-webkit-scrollbar-thumb {
+  /* background: var(--color-primary); */
+  background: rgb(158, 157, 157);
+  /* border-radius: var(--border-radius-1); */
+}
+
+.ims-scroll-bar::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}

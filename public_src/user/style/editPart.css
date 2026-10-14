@@ -1,0 +1,31 @@
+@import url('../style/user.css');
+
+.ims-container {
+  main {
+    .sidePanel {
+      #editPartForm {
+        padding-top: 0;
+        .closeOverlayBtn {
+          height: 30px;
+          width: 2rem;
+        }
+        .ims-input-box {
+          label {
+            font-size: 1.1rem;
+          }
+          input {
+            font-size: 1.1rem;
+            padding-top: 2rem;
+          }
+          & input {
+            &:focus ~ label,
+            &:not(:placeholder-shown) ~ label {
+              left: 0.3rem;
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

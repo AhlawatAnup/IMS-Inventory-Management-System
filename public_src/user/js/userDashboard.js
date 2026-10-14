@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { createIcons, Upload } from 'lucide';
+import { createIcons, Upload, MapPlus } from 'lucide';
 
 // Global user state variables
 let currentUser = null;
@@ -17,21 +17,20 @@ export function switchView(activeSection) {
   }
 }
 
-const navItems = document.querySelectorAll('aside .nav-item, aside a, aside button');
-
 function setActiveNav(selectedItem) {
+  const navItems = document.querySelectorAll('aside a, aside button, aside #userOptions a');
   navItems.forEach((item) => item.classList.remove('active'));
   selectedItem.classList.add('active');
 }
 
-const userDetails = document.getElementById('userDetails');
+// const userDetails = document.getElementById('userDetails');
 export async function getUserDetails() {
   const response = await fetch('/user/getDetails');
   const data = await response.json();
 
   if (!response.ok) {
     console.log('Error fetching user details: ', data.message);
-    (userDetails, (innerHTML = `<p>Couldn't fetch user details!</p>`));
+    // (userDetails, (innerHTML = `<p>Couldn't fetch user details!</p>`));
     return '';
   }
   console.log(data);
@@ -46,17 +45,18 @@ currentUser = data.currentUser;
 hasWritePermission = Boolean(
   currentUser.permissions?.write === true || currentUser.role === 'admin',
 );
-const activePermissions = Object.entries(user.permissions || {})
-  .filter(([key, value]) => value === true)
-  .map(([key]) => key)
-  .join(', ');
-userDetails.innerHTML = `
-  <p>Username: ${user.name}</p>
-  <p>Email: ${user.email}</p>
-  <p>Permissions: ${activePermissions || 'None'}</p>
-`;
+// const activePermissions = Object.entries(user.permissions || {})
+//   .filter(([key, value]) => value === true)
+//   .map(([key]) => key)
+//   .join(', ');
+// userDetails.innerHTML = `
+//   <p>Username: ${user.name}</p>
+//   <p>Email: ${user.email}</p>
+//   <p>Permissions: ${activePermissions || 'None'}</p>
+// `;
 
 const topBar = document.getElementById('topBar');
+const userOptions = document.getElementById('userOptions');
 if (hasWritePermission) {
   topBar.insertAdjacentHTML(
     'beforeend',
@@ -66,9 +66,14 @@ if (hasWritePermission) {
         Upload CSV
       </button>`,
   );
+  userOptions.innerHTML = `<a id="createProject">
+      <i data-lucide="MapPlus" stroke-width="1.5"></i>
+      Create Project
+    </a>`;
   createIcons({
     icons: {
       Upload,
+      MapPlus,
     },
   });
 }
@@ -82,17 +87,44 @@ dashboardBtn.addEventListener('click', async () => {
 });
 
 const uploadFormBtn = document.getElementById('uploadFormBtn');
-const CSVUploadForm = document.getElementById('CSVUploadForm');
-const overlay = document.getElementById('fileInputOverlay');
+const CsvSidePanel = document.getElementById('CsvSidePanel');
+const overlay = document.getElementById('Overlay');
 // 1. Inject the form
 if (uploadFormBtn) {
   uploadFormBtn.addEventListener('click', () => {
-    switchView(CSVUploadForm);
+    CsvSidePanel.classList.remove('hidden');
     overlay.classList.remove('hidden');
+    setTimeout(() => CsvSidePanel.classList.add('open'), 10);
   });
 }
 
-const logoutBtn = document.getElementById('userLogoutBtn');
+const profileBtn = document.getElementById('userProfile');
+const profilePage = document.getElementById('profilePage');
+profileBtn.addEventListener('click', async () => {
+  defaultDashboard.style.display = 'none';
+  setActiveNav(profileBtn);
+  switchView(profilePage);
+});
+
+const createProjectBtn = document.getElementById('createProject');
+const createProjectPage = document.getElementById('createProjectPage');
+createProjectBtn.addEventListener('click', async () => {
+  defaultDashboard.style.display = 'none';
+  setActiveNav(createProjectBtn);
+  switchView(createProjectPage);
+});
+
+const uploadBtn = document.getElementById('uploadProjectFormBtn');
+const projectSidePanel = document.getElementById('projectSidePanel');
+const projectUploadOverlay = document.getElementById('Overlay');
+// 1. Inject the form
+if (uploadBtn) {
+  uploadBtn.addEventListener('click', () => {
+    projectSidePanel.classList.remove('hidden');
+    projectUploadOverlay.classList.remove('hidden');
+    setTimeout(() => projectSidePanel.classList.add('open'), 10);
+  });
+}
 
 window.addEventListener('pageshow', (event) => {
   // If loaded from browser cache (back/forward button), force reload from server
@@ -100,6 +132,8 @@ window.addEventListener('pageshow', (event) => {
     window.location.reload();
   }
 });
+
+const logoutBtn = document.getElementById('userLogoutBtn');
 
 function handleLogout() {
   Swal.fire({

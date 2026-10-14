@@ -40,6 +40,9 @@ import {
   Trash,
   Search,
   Copy,
+  Minus,
+  CircleCheck,
+  MapPlus
 } from 'lucide';
 
 createIcons({
@@ -84,5 +87,8 @@ createIcons({
     Trash,
     Search,
     Copy,
+    Minus,
+    CircleCheck,
+    MapPlus
   },
 });

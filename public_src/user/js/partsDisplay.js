@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { createIcons, Pencil, Upload, Trash, Search, Copy } from 'lucide';
+import { createIcons, Pencil, Upload, Trash, Search, Copy, Plus, Minus } from 'lucide';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
 import { switchView, getUserDetails } from './userDashboard';
@@ -63,7 +63,7 @@ window.changePage = function (newPage) {
   if (userDashDiv) userDashDiv.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-function renderPartsTable(partsArr) {
+export function renderPartsTable(partsArr) {
   const tableRows = partsArr
     .map((part) => {
       const formattedDate = part.updatedAt
@@ -81,14 +81,20 @@ function renderPartsTable(partsArr) {
         <button class="delete-btn" data-id="${part._id}" title="Delete">
         <i data-lucide="Trash" stroke-width = 1.5 stroke="#4f545e"></i>
         </button>
+        <button class="qty-popup-btn" data-id="${part._id}" data-action="add" title="Add Quantity">
+        <i data-lucide="Plus" stroke-width = 1.5 stroke="#4f545e"></i>
+        </button>
+        <button class="qty-popup-btn" data-id="${part._id}" data-action="subtract" title="Subtract Quantity">
+        <i data-lucide="Minus" stroke-width = 1.5 stroke="#4f545e"></i>
+        </button>
         </div>`
         : `<span class="text-muted">Read-only</span>`;
 
       return `
         <tr>
           <td>
-          ${part.mfgPartNumber || ''}
-          <button class="copy-btn"data-mpn="${part.mfgPartNumber || ''}" title="Copy MPN"><i data-lucide="Copy" stroke-width=1.5></i></button>
+          <button class="clickable-mpn" data-id="${part._id}">${part.mfgPartNumber || ''}</button>
+          <button class="copy-btn" data-mpn="${part.mfgPartNumber || ''}" title="Copy MPN"><i data-lucide="Copy" stroke-width=1.5></i></button>
           </td>
           <td>${part.footprint || ''}</td>
           <td>${part.value || ''}</td>
@@ -148,7 +154,7 @@ async function initPartsTable(page = 1) {
     // Render table and pagination
     partsDisplayDiv.innerHTML = renderPartsTable(partsArray);
     renderPaginationControls(currentPage, totalPages);
-    createIcons({ icons: { Pencil, Trash, Search, Copy } });
+    createIcons({ icons: { Pencil, Trash, Search, Copy, Plus, Minus } });
 
     // RESTORE value and cursor position if the search bar was active
     const searchInput = document.getElementById('searchInput');
@@ -190,9 +196,17 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+const editPartSidePanel = document.getElementById('editPartSidePanel');
 const editPartForm = document.getElementById('editPartForm');
-const editPartsOverlay = document.getElementById('editPartOverlay');
+const editPartsOverlay = document.getElementById('Overlay');
 const closeEditOverlayBtn = document.getElementById('closeEditOverlayBtn');
+
+const historyPanel = document.getElementById('historyPanel');
+const closePanelBtn = document.getElementById('closePanelBtn');
+const panelMpnTitle = document.getElementById('panelMpnTitle');
+const panelContent = document.getElementById('panelContent');
+const historyOverlay = document.getElementById('Overlay');
+
 const partsDisplayDiv = document.getElementById('partsDisplayDiv');
 
 // Event delegation for clicking the Edit and Delete button inside the table
@@ -201,6 +215,8 @@ if (partsDisplayDiv) {
     const editBtn = e.target.closest('.edit-btn');
     const deleteBtn = e.target.closest('.delete-btn');
     const copyBtn = e.target.closest('.copy-btn');
+    const qtyPopupBtn = e.target.closest('.qty-popup-btn');
+    const mpn = e.target.closest('.clickable-mpn');
 
     if (editBtn) {
       // Get the part ID stored in the button's data-id attribute
@@ -222,8 +238,10 @@ if (partsDisplayDiv) {
 
       editPartForm.setAttribute('data-editing-id', partId);
 
-      switchView(editPartForm);
-      if (editPartsOverlay) editPartsOverlay.classList.remove('hidden');
+      editPartSidePanel.classList.remove('hidden');
+      editPartsOverlay.classList.remove('hidden');
+      // Small timeout allows display:flex to register before adding the slide-in class
+      setTimeout(() => editPartSidePanel.classList.add('open'), 10);
     }
 
     if (deleteBtn) {
@@ -254,7 +272,7 @@ if (partsDisplayDiv) {
           style: { background: '#db3535' },
         }).showToast();
 
-        editPartForm.classList.add('hidden');
+        editPartSidePanel.classList.add('hidden');
         if (editPartsOverlay) editPartsOverlay.classList.add('hidden');
         switchView(partsDisplayDiv);
         initPartsTable();
@@ -269,7 +287,7 @@ if (partsDisplayDiv) {
         style: { background: '#00db28' },
       }).showToast();
 
-      editPartForm.classList.add('hidden');
+      editPartSidePanel.classList.add('hidden');
       if (editPartsOverlay) editPartsOverlay.classList.add('hidden');
       switchView(partsDisplayDiv);
       initPartsTable();
@@ -300,6 +318,144 @@ if (partsDisplayDiv) {
       }
       return;
     }
+
+    if (qtyPopupBtn) {
+      const partId = qtyPopupBtn.getAttribute('data-id');
+      const action = qtyPopupBtn.getAttribute('data-action');
+      const isAdd = action == 'add';
+
+      Swal.fire({
+        title: isAdd ? 'Enter Quantity Increased' : 'Enter Quantity Decreased',
+        html: `
+          <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
+            <input type="number" id="swalQtyInput" class="swal2-input" value="1" min="1" style="width: 100px; margin: 0; text-align: center;" />
+            
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Confirm',
+        confirmButtonColor: '#2ecc71',
+        cancelButtonColor: '#db3535',
+        scrollbarPadding: false,
+        heightAuto: false,
+        didOpen: () => {
+          // Focus the input automatically
+          const input = document.getElementById('swalQtyInput');
+          if (input) {
+            input.focus();
+            input.select();
+          }
+        },
+        preConfirm: () => {
+          const qtyVal = parseInt(document.getElementById('swalQtyInput').value, 10);
+          if (isNaN(qtyVal) || qtyVal <= 0) {
+            Swal.showValidationMessage('Please enter a valid positive number');
+            return false;
+          }
+          // Return signed delta (+ or -)
+          return isAdd ? qtyVal : -qtyVal;
+        },
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const delta = result.value;
+
+          try {
+            // Send request to update quantity
+            const response = await fetch(`/parts/updateQty/${partId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ delta }),
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+
+            Toastify({
+              text: 'Quantity updated successfully!',
+              duration: 2500,
+              gravity: 'top',
+              position: 'right',
+              style: { background: '#00db28' },
+            }).showToast();
+
+            // Refresh table
+            initPartsTable();
+          } catch (error) {
+            Toastify({
+              text: `Quantity update failed: ${error.message}`,
+              duration: 3000,
+              gravity: 'top',
+              position: 'right',
+              style: { background: '#db3535' },
+            }).showToast();
+          }
+        }
+      });
+      return;
+    }
+
+    if (mpn) {
+      const partId = mpn.getAttribute('data-id');
+
+      try {
+        const response = await fetch(`/parts/fetchById/${partId}`);
+        const data = await response.json();
+        const part = data.partDetails;
+
+        if (!part) return;
+
+        panelMpnTitle.textContent = `History: ${part.mfgPartNumber}`;
+
+        // Render History List
+        if (!part.stockHistory || part.stockHistory.length === 0) {
+          panelContent.innerHTML = `<p class="text-muted">No stock history recorded yet.</p>`;
+        } else {
+          // Sort history by date descending (newest first)
+          const sortedHistory = [...part.stockHistory].sort(
+            (a, b) => new Date(b.date) - new Date(a.date),
+          );
+
+          const timelineItemsHtml = sortedHistory
+            .map((item) => {
+              const isAdd = item.type === 1;
+              const sign = isAdd ? '+' : '-';
+              const formattedDate = new Date(item.date).toLocaleString('en-US', {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+              });
+
+              return `
+                <div class="timeline-item">
+                  <div class="timeline-dot ${isAdd ? 'added' : 'removed'}"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-header-row">
+                      <span class="timeline-qty ${isAdd ? 'added' : 'removed'}">
+                        ${sign}${item.quantity} units
+                      </span>
+                      <span class="timeline-date">${formattedDate}</span>
+                    </div>
+                    <div class="timeline-remarks">
+                      ${item.remarks || (isAdd ? 'Stock Added' : 'Stock Removed')}
+                    </div>
+                  </div>
+                </div>
+              `;
+            })
+            .join('');
+
+          panelContent.innerHTML = `<div class="timeline-container">${timelineItemsHtml}</div>`;
+        }
+
+        // --- TRIGGER THE SLIDE IN ---
+        historyPanel.classList.remove('hidden');
+        historyOverlay.classList.remove('hidden');
+        // Small timeout allows display:flex to register before adding the slide-in class
+        setTimeout(() => historyPanel.classList.add('open'), 10);
+      } catch (error) {
+        console.error('Failed to fetch stock history:', error);
+      }
+      return;
+    }
   });
 }
 
@@ -307,7 +463,7 @@ if (partsDisplayDiv) {
 if (closeEditOverlayBtn) {
   closeEditOverlayBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    editPartForm.classList.add('hidden');
+    editPartSidePanel.classList.add('hidden');
     if (editPartsOverlay) editPartsOverlay.classList.add('hidden');
     // Switch back to default dashboard or parts table view
     switchView(partsDisplayDiv);
@@ -315,7 +471,17 @@ if (closeEditOverlayBtn) {
   });
 }
 
-editPartForm.addEventListener('submit', async (e) => {
+if (closePanelBtn) {
+  closePanelBtn.addEventListener('click', () => {
+    historyPanel.classList.remove('open'); // Slide out
+    setTimeout(() => {
+      historyOverlay.classList.add('hidden');
+      historyPanel.classList.add('hidden'); // Fully hide after animation completes
+    }, 300);
+  });
+}
+
+editPartSidePanel.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const updatedData = {
@@ -323,6 +489,7 @@ editPartForm.addEventListener('submit', async (e) => {
     footprint: document.getElementById('editFootprint').value.trim(),
     description: document.getElementById('editDescription').value.trim(),
     quantity: Number(document.getElementById('editQuantity').value) || 0,
+    remarks: document.getElementById('remarks').value.trim(),
   };
 
   const partId = editPartForm.getAttribute('data-editing-id');
@@ -344,8 +511,11 @@ editPartForm.addEventListener('submit', async (e) => {
       style: { background: '#db3535' },
     }).showToast();
 
-    editPartForm.classList.add('hidden');
-    if (editPartsOverlay) editPartsOverlay.classList.add('hidden');
+    editPartSidePanel.classList.remove('open'); // Slide out
+    setTimeout(() => {
+      editPartsOverlay.classList.add('hidden');
+      editPartSidePanel.classList.add('hidden'); // Fully hide after animation completes
+    }, 300);
     switchView(partsDisplayDiv);
     initPartsTable();
     return;
@@ -359,8 +529,11 @@ editPartForm.addEventListener('submit', async (e) => {
     style: { background: '#00db28' },
   }).showToast();
 
-  editPartForm.classList.add('hidden');
-  if (editPartsOverlay) editPartsOverlay.classList.add('hidden');
+  editPartSidePanel.classList.remove('open'); // Slide out
+  setTimeout(() => {
+    editPartsOverlay.classList.add('hidden');
+    editPartSidePanel.classList.add('hidden'); // Fully hide after animation completes
+  }, 300);
   switchView(partsDisplayDiv);
   initPartsTable();
 });

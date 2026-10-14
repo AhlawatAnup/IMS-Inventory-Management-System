@@ -4,12 +4,12 @@ import * as XLSX from 'xlsx';
 import { switchView } from './userDashboard';
 import { createIcons, DatabaseArrowUp } from 'lucide';
 
-const CSVUploadForm = document.getElementById('CSVUploadForm');
+const CsvSidePanel = document.getElementById('CsvSidePanel');
 const partsDisplayDiv = document.getElementById('partsDisplayDiv');
 const CSVDisplayDiv = document.getElementById('CSVDisplayDiv');
 let currentParsedRows = [];
 // 2. Catch the submit event and parse with SheetJS
-CSVUploadForm.addEventListener('change', async (e) => {
+CsvSidePanel.addEventListener('change', async (e) => {
   e.preventDefault();
 
   const inputFile = e.target.files[0];
@@ -67,7 +67,12 @@ CSVUploadForm.addEventListener('change', async (e) => {
       { value: 'remarks', label: 'Remarks' },
     ];
 
-    overlay.classList.add('hidden');
+    CsvSidePanel.classList.remove('open');
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+      CsvSidePanel.classList.add('hidden'); // Fully hide after animation completes
+    }, 300);
+
     switchView(CSVDisplayDiv);
 
     const tableHeaders = headers
@@ -139,11 +144,16 @@ CSVUploadForm.addEventListener('change', async (e) => {
 });
 
 const closeFormBtn = document.getElementById('closeCSVOverlayBtn');
-const overlay = document.getElementById('fileInputOverlay');
+const overlay = document.getElementById('Overlay');
 closeFormBtn.addEventListener('click', async (e) => {
   e.preventDefault();
 
   overlay.classList.add('hidden');
+  CsvSidePanel.classList.remove('open');
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+    CsvSidePanel.classList.add('hidden'); // Fully hide after animation completes
+  }, 300);
   switchView(partsDisplayDiv);
 });
 

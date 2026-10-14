@@ -1,4 +1,20 @@
 @import url('../../common/components.css');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+html,
+body {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden; /* Disables outer body scrollbars */
+  font-family: 'Rubik', sans-serif;
+}
+
+.ims-flex-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
 
 .ims-container {
   width: 100vw;
