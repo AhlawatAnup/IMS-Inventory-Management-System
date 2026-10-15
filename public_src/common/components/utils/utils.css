@@ -1,0 +1,14 @@
+.text-muted {
+  color: grey;
+  font-size: 1.4rem;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(128 128 128 / 44%);
+  z-index: 10;
+}

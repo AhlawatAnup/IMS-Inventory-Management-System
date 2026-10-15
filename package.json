@@ -1,0 +1,53 @@
+{
+  "name": "inventory-management-system",
+  "version": "1.0.0",
+  "description": "- node ./hpack/hpack.bundler.js\r - npm run web-watch\r - npm run start",
+  "keywords": [],
+  "homepage": "https://github.com/AhlawatAnup/IMS-Inventory-Management-System#readme",
+  "bugs": {
+    "url": "https://github.com/AhlawatAnup/IMS-Inventory-Management-System/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhlawatAnup/IMS-Inventory-Management-System.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "main.server.js",
+  "scripts": {
+    "start": "node main.server.js",
+    "dev": "nodemon main.server.js",
+    "format": "prettier --write .",
+    "web-build": "webpack --config webpack.config.js",
+    "web-watch": "webpack --watch"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-mongo": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express-session": "^1.19.0",
+    "lucide": "^1.35.0",
+    "mongoose": "^9.8.1",
+    "nodemon": "^3.1.14",
+    "sweetalert2": "^11.26.25",
+    "toastify-js": "^1.12.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "babel-loader": "^10.1.1",
+    "cheerio": "^1.2.0",
+    "css-loader": "^7.1.4",
+    "html-minifier-terser": "^7.2.0",
+    "mini-css-extract-plugin": "^2.10.2",
+    "prettier": "^3.9.6",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.109.2",
+    "webpack-bundle-analyzer": "^5.3.1",
+    "webpack-cli": "^7.2.2",
+    "webpack-dev-server": "^6.0.0"
+  }
+}

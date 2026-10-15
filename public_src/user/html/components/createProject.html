@@ -1,0 +1,33 @@
+<div id="createProjectPage" class="userDashContent hidden ims-flex-page">
+  <div class="createProjectHeader">
+    <div class="header">
+      <div id="topBar">
+        <h2>Create A New Project</h2>
+        <div class="navSection">
+          <button id="uploadProjectFormBtn">
+            <i data-lucide="Upload" stroke-width="1.5"></i>
+            Upload Project CSV
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fileDisplay" id="fileDisplayDiv"></div>
+</div>
+
+<div class="sidePanel hidden" id="projectSidePanel">
+  <form id="projectUploadForm">
+    <div id="formHeader" class="panelHeader">
+      <h3>Import Project Components</h3>
+      <button id="closeProjectOverlayBtn" class="closeOverlayBtn">
+        <i data-lucide="X" stroke-width="1.5"></i>
+      </button>
+    </div>
+    <div class="ims-input-box">
+      <input type="file" id="CSVFileInput" accept=".csv, .xlsx, .xls" required placeholder="" />
+      <label for="CSVFile"
+        >Upload CSV/Excel file with MPN's and Quantities of parts used in Project</label
+      >
+    </div>
+  </form>
+</div>
