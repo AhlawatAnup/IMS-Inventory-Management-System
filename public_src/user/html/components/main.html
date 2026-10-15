@@ -1,0 +1,28 @@
+<main>
+  <div id="defaultDashboard">
+    <div class="header">
+      <div id="topBar">
+        <h2>USER DASHBOARD</h2>
+      </div>
+      <!-- <div id="userDetails"></div> -->
+    </div>
+  </div>
+  <div id="userDashDiv" class="ims-scroll-bar">
+    <div id="partsDisplayDiv" class="userDashContent"></div>
+    <include src="../components/uploadCSV.html"></include>
+    <include src="../components/editPart.html"></include>
+    <div id="CSVDisplayDiv" class="userDashContent hidden"></div>
+    <include src="../components/profile.html"></include>
+    <include src="../components/createProject.html"></include>
+
+    <div id="historyPanel" class="sidePanel hidden">
+      <div class="panelHeader">
+        <h3 id="panelMpnTitle">Stock History</h3>
+        <button type="button" id="closePanelBtn" class="close-panel-btn">
+          <i data-lucide="X" stroke-width="1.5"></i>
+        </button>
+      </div>
+      <div id="panelContent" class="panel-body ims-scroll-bar"></div>
+    </div>
+  </div>
+</main>

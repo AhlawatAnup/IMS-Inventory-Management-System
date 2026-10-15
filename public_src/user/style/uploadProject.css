@@ -1,0 +1,45 @@
+@import url('../style/user.css');
+
+.ims-flex-page {
+  .fileDisplay {
+    padding: 0;
+    padding-bottom: 1rem;
+    .ims-table {
+      text-align: center;
+      thead {
+        font-size: 1.1rem;
+        th {
+          text-align: center;
+        }
+      }
+      tbody td {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.ims-container {
+  main {
+    #projectUploadForm {
+      gap: 6rem;
+      padding-top: 0;
+    }
+    .sidePanel {
+      #projectUploadForm {
+        .ims-input-box {
+          padding-top: 0.5rem;
+
+          & input {
+            &:focus ~ label,
+            &:not(:placeholder-shown) ~ label {
+              top: 0.9rem;
+              left: 0.1rem;
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

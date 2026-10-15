@@ -1,0 +1,62 @@
+@import url('../style/user.css');
+
+.hidden {
+  display: none;
+}
+
+.overlay {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+.ims-container {
+  main {
+    #CSVUploadForm {
+      padding-top: 0;
+    }
+    .sidePanel {
+      .panelHeader {
+        align-items: flex-start;
+      }
+      #formHeader {
+        width: stretch;
+        padding-left: 0.5px;
+
+        .closeOverlayBtn {
+          background-color: transparent;
+          border: transparent;
+          height: 0;
+          width: 4rem;
+        }
+      }
+      .ims-input-box {
+        input {
+          height: fit-content;
+          padding-top: 3.5rem;
+        }
+        & textarea {
+          &:focus ~ label,
+          &:not(:placeholder-shown) ~ label {
+            top: 2.4rem;
+            left: 0.6rem;
+            font-size: 1rem;
+            margin-top: 0rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+#CSVDisplayDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+
+  .ims-btn-v1 {
+    button {
+      gap: 0.2rem;
+    }
+  }
+}

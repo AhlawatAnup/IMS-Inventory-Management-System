@@ -37,12 +37,33 @@ const sessionMiddleware = session({
 });
 
 app.use(sessionMiddleware);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', express.json());
 
 app.get('/', noCache, preventAuth, (req, res) => {
   res.sendFile(path.join(publicPath, 'home.pack', 'home.html'));
 });
 
+const authRoutes = require('./src/routes/authRoutes.js');
+app.use('/auth', authRoutes);
+
+const adminRoutes = require('./src/routes/adminRoutes.js');
+app.use('/admin', adminRoutes);
+
+const dashboardRoutes = require('./src/routes/dashboardRoutes.js');
+app.use('/dashboard', dashboardRoutes);
+
+const userRoutes = require('./src/routes/userRoutes.js');
+app.use('/user', userRoutes);
+
+const partRoutes = require('./src/routes/partRoutes.js');
+app.use('/parts', partRoutes);
+
 const server = app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
+
+module.exports = { publicPath };
